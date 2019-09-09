@@ -5,14 +5,13 @@
         :class="[`cube--${cubeColorInt}`, {'cube--chosen': chosen}]"
         @click="chooseCube"
     >
-        {{ cubeColorInt }}
     </div>
 </template>
 
 <script>
 
 const cubeColorArray = [
-    'red', 'yellow', 'green'
+    'red', 'yellow', 'green', 'blue',
 ];
 
 export default {
@@ -24,13 +23,19 @@ export default {
         show: {
             type: Boolean,
         },
+        /**
+         * Координаты кубика
+         */
+        position: {
+            type: Object,
+        }
     },
     computed: {
         /**
          * Какой будет цвет у кибика приинициализации
          */
         cubeColorInt() {
-            const random = Math.floor(Math.random() * (3 - 0) + 0);
+            const random = Math.floor(Math.random() * (4 - 0) + 0);
             return cubeColorArray[random];
         },
     },
@@ -45,7 +50,13 @@ export default {
          */
         chooseCube(event) {
             this.chosen = !this.chosen;
-            this.$emit('choose-cude', this.cubeColorInt);
+            // Собираем данные о кубике в один объект
+            const buff = {
+                color: this.cubeColorInt,
+                position: this.position
+            };
+            // Посылаем событие родителю, что пользователь нажал на этот кубик
+            this.$emit('choose-cude', buff);
         }
     }
 };
@@ -63,6 +74,9 @@ export default {
     }
     &--green {
         background-color green
+    }
+    &--blue {
+        background-color blue
     }
     &--chosen {
         border solid 2px black

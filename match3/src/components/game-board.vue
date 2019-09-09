@@ -9,10 +9,11 @@
                     v-for="x in boardSize.x"
                     :key="x"
                     class="game-board__cell"
-                    v-on:choose-cude="matchCube"
                 >
-                    <cube 
+                    <cube
+                        @choose-cude="matchCube"
                         :show="true"
+                        :position="{x, y}"
                     />
                 </th>
             </tr>
@@ -33,20 +34,29 @@ export default {
 
     data() {
         return {
-          /**
-           * Размер игровой доски, по умолчанию 10 на 10
-           */
+            /**
+            * Размер игровой доски, по умолчанию 10 на 10
+            */
             boardSize: {
                 x: 10,
                 y: 10,
             },
+            /**
+             * Храним данные о том, какой кубик был выбран первым, а какой вторым
+             */
+            firstChoosenCube: null,
+            secondChoosenCube: null,
         };
     },
     methods: {
         matchCube(event) {
-            console.log('toto');
-            console.log(event);
-        }
+            if (!this.firstChoosenCube || !this.secondChoosenCube) {
+                this.firstChoosenCube ? this.secondChoosenCube = event : this.firstChoosenCube = event;
+            }
+        },
+        swapCubes() {
+            
+        },
     }
 };
 </script>
