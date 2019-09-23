@@ -2,18 +2,18 @@
     <div>
         <table class="game-board">
             <tr
-                v-for="y in boardSize.y"
+                v-for="y in board.length + 1"
                 :key="y"
             >
                 <th
-                    v-for="x in boardSize.x"
-                    :key="x"
+                    v-for="(cube, i) in board[y]"
+                    :key="i"
                     class="game-board__cell"
                 >
                     <cube
                         @choose-cude="matchCube"
                         :show="true"
-                        :position="{x, y}"
+                        :cubInfo="cube"
                     />
                 </th>
             </tr>
@@ -48,6 +48,11 @@ export default {
             secondChoosenCube: null,
         };
     },
+    computed: {
+        board() {
+            return this.$store.state.blocksGrid;
+        }
+    },
     methods: {
         matchCube(event) {
             if (!this.firstChoosenCube || !this.secondChoosenCube) {
@@ -57,6 +62,9 @@ export default {
         swapCubes() {
             
         },
+    },
+    created() {
+        this.$store.dispatch('initialization');
     }
 };
 </script>

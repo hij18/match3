@@ -24,9 +24,9 @@ export default {
             type: Boolean,
         },
         /**
-         * Координаты кубика
+         * Информация о кубике
          */
-        position: {
+        cubInfo: {
             type: Object,
         }
     },
@@ -35,8 +35,7 @@ export default {
          * Какой будет цвет у кибика приинициализации
          */
         cubeColorInt() {
-            const random = Math.floor(Math.random() * (4 - 0) + 0);
-            return cubeColorArray[random];
+            return this.cubInfo.color;
         },
     },
     data() {
