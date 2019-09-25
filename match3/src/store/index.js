@@ -11,7 +11,9 @@ export default {
     namespaced: true,
     state() {
         return {
-            // Размер игрового поля
+            /**
+            * Размер игровой доски, по умолчанию 10 на 10
+            */
             boardSize: {
                 x: 10,
                 y: 10,
@@ -37,6 +39,11 @@ export default {
                     state.blocksGrid[i].push(buff);
                 }
             }
+        },
+        changePosition(state, { first, second }) {
+            const buff = first.color;
+            state.blocksGrid[first.position.x][first.position.y].color = second.color;
+            state.blocksGrid[second.position.x][second.position.y].color = buff;
         }
     },
     actions: {
@@ -47,6 +54,9 @@ export default {
             if (state.boardSize && state.boardSize.x && state.boardSize.y) {
                 commit('setGameGrid');
             }
+        },
+        matchCube({ state, commit }, { first, second }) {
+            commit('changePosition', { first, second });
         },
     },
 };

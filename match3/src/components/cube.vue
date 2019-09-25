@@ -2,7 +2,7 @@
     <div 
         v-show="show"
         class="cube"
-        :class="[`cube--${cubeColorInt}`, {'cube--chosen': chosen}]"
+        :class="[`cube--${cubInfo.color}`, {'cube--chosen': chosen}]"
         @click="chooseCube"
     >
     </div>
@@ -30,14 +30,6 @@ export default {
             type: Object,
         }
     },
-    computed: {
-        /**
-         * Какой будет цвет у кибика приинициализации
-         */
-        cubeColorInt() {
-            return this.cubInfo.color;
-        },
-    },
     data() {
         return {
             chosen: false,
@@ -49,13 +41,8 @@ export default {
          */
         chooseCube(event) {
             this.chosen = !this.chosen;
-            // Собираем данные о кубике в один объект
-            const buff = {
-                color: this.cubeColorInt,
-                position: this.position
-            };
             // Посылаем событие родителю, что пользователь нажал на этот кубик
-            this.$emit('choose-cude', buff);
+            this.$emit('choose-cude', this.cubInfo);
         }
     }
 };

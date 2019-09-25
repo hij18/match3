@@ -35,13 +35,6 @@ export default {
     data() {
         return {
             /**
-            * Размер игровой доски, по умолчанию 10 на 10
-            */
-            boardSize: {
-                x: 10,
-                y: 10,
-            },
-            /**
              * Храним данные о том, какой кубик был выбран первым, а какой вторым
              */
             firstChoosenCube: null,
@@ -57,6 +50,14 @@ export default {
         matchCube(event) {
             if (!this.firstChoosenCube || !this.secondChoosenCube) {
                 this.firstChoosenCube ? this.secondChoosenCube = event : this.firstChoosenCube = event;
+            }
+            if (this.firstChoosenCube && this.secondChoosenCube) {
+                this.$store.dispatch('matchCube', { 
+                    first: this.firstChoosenCube, 
+                    second: this.secondChoosenCube 
+                });
+                this.firstChoosenCube = null;
+                this.secondChoosenCube = null;
             }
         },
         swapCubes() {
