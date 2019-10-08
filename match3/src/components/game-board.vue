@@ -2,11 +2,11 @@
     <div>
         <table class="game-board">
             <tr
-                v-for="y in board.length + 1"
+                v-for="y in board.length"
                 :key="y"
             >
                 <th
-                    v-for="(cube, i) in board[y]"
+                    v-for="(cube, i) in board[y - 1]"
                     :key="i"
                     class="game-board__cell"
                 >
