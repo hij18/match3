@@ -10,10 +10,6 @@
 
 <script>
 
-const cubeColorArray = [
-    'red', 'yellow', 'green', 'blue',
-];
-
 export default {
     name: 'game-cube',
     props: {
@@ -52,6 +48,9 @@ export default {
 .cube {
     width 100%
     height 100%
+    &__empty {
+        background-color none
+    }
     &--red {
         background-color red
     }

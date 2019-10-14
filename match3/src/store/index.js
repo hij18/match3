@@ -13,11 +13,13 @@ const cubeColorInt = () => {
  * Метод для сравнивания соседних полей на соответсвие цветов
  * @param {Object} cube 
  * @param {Array} board 
+ * TO DO: Придумать как оптимизировать этот код, много повторяющихся строк
  */
 const isCubeMatch = (cube, board, length) => {
     const x = cube.position.x;
     const y = cube.position.y;
     const matchCubes = [];
+    matchCubes.push(cube);
     // Ищем совпадения по горизонатли в соседних клетках
     for (let i = x + 1; i !== length; i++) {
         if (cube.color === board[y][i].color) {
@@ -68,6 +70,8 @@ export default {
             // По умолчанию сетка пустая (Вложенный массив)
             // Заполняется при инициализации игры
             blocksGrid: [],
+            // Колличество очков набранных в данной партии
+            myScore: 0,
         };
     },
     mutations: {
@@ -87,11 +91,26 @@ export default {
             }
         },
         changePosition(state, { first, second }) {
-            const buff = first.color;
-            Vue.set(state.blocksGrid[first.position.y][first.position.x], 'color', second.color);
-            Vue.set(state.blocksGrid[second.position.y][second.position.x], 'color', buff);
-            console.log(isCubeMatch(second, state.blocksGrid, 10));
-        }
+            const firstColor = first.color;
+            const secondColor = second.color;
+            Vue.set(state.blocksGrid[first.position.y][first.position.x], 'color', secondColor);
+            Vue.set(state.blocksGrid[second.position.y][second.position.x], 'color', firstColor);
+            const сubesMatch = isCubeMatch(second, state.blocksGrid, 10);
+            // Если длина кубиков одного цвета в ряд больше 3, включая исходный, то нужно удалить кубики с поля
+            if (сubesMatch.length > 2) {
+                сubesMatch.forEach(cube => {
+                    state.blocksGrid[cube.position.y][cube.position.x].color = 'empty';
+                });
+                Vue.set(state, 'myScore', state.myScore + сubesMatch.length * 10);
+            } else {
+                // Если совпадений нет, то через секунду возвращаем кубики на свою позицию изначальную
+                setTimeout(() => {
+                    Vue.set(state.blocksGrid[first.position.y][first.position.x], 'color', firstColor);
+                    Vue.set(state.blocksGrid[second.position.y][second.position.x], 'color', secondColor);
+                }, 1000);
+            }
+        },
+
     },
     actions: {
         /**
@@ -102,7 +121,7 @@ export default {
                 commit('setGameGrid');
             }
         },
-        matchCube({ state, commit }, { first, second }) {
+        matchCube({ commit }, { first, second }) {
             commit('changePosition', { first, second });
         },
     },

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <span>Твои очки: {{ myScore }}</span>
         <table class="game-board">
             <tr
                 v-for="y in board.length"
@@ -44,6 +45,9 @@ export default {
     computed: {
         board() {
             return this.$store.state.blocksGrid;
+        },
+        myScore() {
+            return this.$store.state.myScore;
         }
     },
     methods: {
